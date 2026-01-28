@@ -135,4 +135,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 =======
 ## Conduit_Playwright
 Automação (UI, API, Performance, Pixel diff, Dashboard)
->>>>>>> ec39907709c82e1e6dc7095d3eb88106880866ad
+
