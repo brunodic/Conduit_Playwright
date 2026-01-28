@@ -1,3 +1,6 @@
+<details>
+<summary><strong>📘 Documentação completa do projeto</strong></summary>
+
 ![RealWorld Example App](logo.png)
 
 > **React / Vite + SWC / Express.js / Sequelize / PostgreSQL codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://realworld.io/) spec and API.**
@@ -132,7 +135,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [RealWorld (GitHub)](https://github.com/gothinkster/realworld)
 - [CodebaseShow](https://codebase.show/)
 - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-=======
+</details> ```
+
+  
 ## Conduit_Playwright
 Automação (UI, API, Performance, Pixel diff, Dashboard)
 
