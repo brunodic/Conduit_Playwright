@@ -135,8 +135,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - [RealWorld (GitHub)](https://github.com/gothinkster/realworld)
 - [CodebaseShow](https://codebase.show/)
 - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-</details> ```
-
+</details>
   
 ## Conduit_Playwright
 Automação (UI, API, Performance, Pixel diff, Dashboard)
