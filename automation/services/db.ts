@@ -8,10 +8,11 @@ export async function deleteUser(email: string) {
     database: 'database_development',
   });
 
-  await conn.execute(
-    'DELETE FROM users WHERE email = ?',
-    [email]
-  );
+
+
+
+
+  await conn.execute('DELETE FROM users WHERE email = ?',[email]);
 
   await conn.end();
 }
