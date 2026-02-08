@@ -149,13 +149,7 @@ Sistema de orquestração e monitoramento de execuções de testes automatizados
 - **Infraestrutura**: Docker Compose
 
 
-![Arquitetura](conduit-app\arquitetura-dashboard.svg)
-
-
-
-
-
-
+![Arquitetura](arquitetura-dashboard.svg)
 
 
 
