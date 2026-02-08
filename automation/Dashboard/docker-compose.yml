@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dashboard-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-dashboard_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dashboard_password}
+      POSTGRES_DB: ${DB_NAME:-dashboard_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dashboard_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dashboard-network
+
+  backend:
+    build:
+      context: ./dashboard-backend
+      dockerfile: Dockerfile
+    container_name: dashboard-backend
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${BACKEND_PORT:-3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-dashboard_user}
+      DB_PASSWORD: ${DB_PASSWORD:-dashboard_password}
+      DB_NAME: ${DB_NAME:-dashboard_db}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-}
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - ./dashboard-backend:/app
+      - /app/node_modules
+      - ./dashboard-backend/uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dashboard-network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./dashboard-frontend
+      dockerfile: Dockerfile
+    container_name: dashboard-frontend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "${FRONTEND_PORT:-3001}:3001"
+    volumes:
+      - ./dashboard-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - dashboard-network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+
+networks:
+  dashboard-network:
+    driver: bridge
+

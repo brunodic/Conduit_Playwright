@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  githubId  String?  @unique @map("github_id")
+  role      UserRole @default(VIEWER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  executions Execution[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  EXECUTOR
+  VIEWER
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  name           String
+  repositoryUrl  String  @map("repository_url")
+  githubRepoId   String? @unique @map("github_repo_id")
+  defaultBranch  String  @default("main") @map("default_branch")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  executions Execution[]
+  webhooks    Webhook[]
+  rules       ReleaseRule[]
+
+  @@map("projects")
+}
+
+model Execution {
+  id           String        @id @default(uuid())
+  projectId    String        @map("project_id")
+  branch       String
+  environment  String
+  suiteTags    String[]      @map("suite_tags")
+  status       ExecutionStatus @default(PENDING)
+  triggeredBy  String        @map("triggered_by")
+  githubRunId  String?       @unique @map("github_run_id")
+  startedAt    DateTime?     @map("started_at")
+  completedAt  DateTime?     @map("completed_at")
+  durationMs   Int?          @map("duration_ms")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  triggeredByUser User      @relation(fields: [triggeredBy], references: [id])
+  testResults TestResult[]
+  metrics     Metrics?
+
+  @@index([projectId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("executions")
+}
+
+enum ExecutionStatus {
+  PENDING
+  RUNNING
+  PASSED
+  FAILED
+  CANCELLED
+}
+
+model TestResult {
+  id            String   @id @default(uuid())
+  executionId   String   @map("execution_id")
+  testName      String   @map("test_name")
+  status        TestStatus
+  durationMs    Int?     @map("duration_ms")
+  errorMessage  String? @map("error_message")
+  screenshotPath String? @map("screenshot_path")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  execution Execution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  @@index([executionId])
+  @@index([status])
+  @@map("test_results")
+}
+
+enum TestStatus {
+  PASSED
+  FAILED
+  SKIPPED
+}
+
+model Metrics {
+  id          String   @id @default(uuid())
+  executionId String   @unique @map("execution_id")
+  totalTests  Int      @map("total_tests")
+  passed      Int
+  failed      Int
+  skipped     Int
+  flakyTests  String[] @map("flaky_tests")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  execution Execution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  @@map("metrics")
+}
+
+model Webhook {
+  id              String   @id @default(uuid())
+  projectId       String   @map("project_id")
+  githubWebhookId String?  @unique @map("github_webhook_id")
+  secret          String
+  events          String[]
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("webhooks")
+}
+
+model ReleaseRule {
+  id              String   @id @default(uuid())
+  projectId       String   @map("project_id")
+  maxFailureRate  Float?   @map("max_failure_rate")
+  blockOnCritical Boolean  @default(true) @map("block_on_critical")
+  maxFlakyTests   Int?     @map("max_flaky_tests")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId])
+  @@map("release_rules")
+}
+
+model ReleaseDecision {
+  id          String   @id @default(uuid())
+  executionId String   @map("execution_id")
+  decision    Decision
+  reason      String?
+  decidedBy   String   @map("decided_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  execution Execution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [decidedBy], references: [id])
+
+  @@index([executionId])
+  @@map("release_decisions")
+}
+
+enum Decision {
+  APPROVED
+  REJECTED
+}
+

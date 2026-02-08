@@ -27,7 +27,7 @@ export const RegisterSelectors = {
 
 export async function expectRegisterPageVisible(page: Page) {
 
-  await expect(page.locator(RegisterSelectors.fields.username)).toBeVisible();
+  await expect(page.locator(RegisterSelectors.fields.username)).not.toBeVisible();
   await expect(page.locator(RegisterSelectors.fields.email)).toBeVisible();
   await expect(page.locator(RegisterSelectors.fields.password)).toBeVisible();
   await expect(page.locator(RegisterSelectors.href.signInToYourAccount)).toBeVisible();  

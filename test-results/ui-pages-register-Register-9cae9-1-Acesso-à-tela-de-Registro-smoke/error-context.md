@@ -1,0 +1,59 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic:
+        - link "conduit" [ref=e5] [cursor=pointer]:
+          - /url: "#/"
+        - list [ref=e6]:
+          - listitem [ref=e7]:
+            - link " Source code" [ref=e8] [cursor=pointer]:
+              - /url: https://github.com/TonyMckes/conduit-realworld-example-app
+              - generic [ref=e9]: 
+              - text: Source code
+        - list [ref=e10]:
+          - listitem [ref=e11]:
+            - link " Home" [ref=e12] [cursor=pointer]:
+              - /url: "#/"
+              - generic [ref=e13]: 
+              - text: Home
+          - listitem [ref=e14]:
+            - link " Login" [ref=e15] [cursor=pointer]:
+              - /url: "#/login"
+              - generic [ref=e16]: 
+              - text: Login
+          - listitem [ref=e17]:
+            - link "Sign up" [ref=e18] [cursor=pointer]:
+              - /url: "#/register"
+  - main [ref=e19]:
+    - generic [ref=e23]:
+      - heading "Sign up" [level=1] [ref=e24]
+      - paragraph [ref=e25]:
+        - link "Sign in to your account" [ref=e26] [cursor=pointer]:
+          - /url: "#/login"
+      - generic [ref=e27]:
+        - group [ref=e28]:
+          - textbox "Your Name" [ref=e29]
+        - group [ref=e30]:
+          - textbox "Email" [ref=e31]
+        - group [ref=e32]:
+          - textbox "Password" [ref=e33]
+        - button "Sign up" [ref=e34] [cursor=pointer]
+  - contentinfo [ref=e35]:
+    - generic [ref=e36]:
+      - link "conduit" [ref=e37] [cursor=pointer]:
+        - /url: "#/"
+      - generic [ref=e38]:
+        - text: An interactive learning project from
+        - link "Thinkster" [ref=e39] [cursor=pointer]:
+          - /url: https://thinkster.io
+        - text: . Code & design licensed under MIT.
+      - list [ref=e40]:
+        - listitem [ref=e41]:
+          - link " Source code" [ref=e42] [cursor=pointer]:
+            - /url: https://github.com/TonyMckes/conduit-realworld-example-app
+            - generic [ref=e43]: 
+            - text: Source code
+```
