@@ -275,9 +275,5 @@ Dashboard/
 - `GET /api/metrics/trends` - Tendências
 - `GET /api/metrics/flaky` - Testes flaky
 
-## Próximos Passos
-
-Consulte o plano completo em `.cursor/plans/` para ver todas as fases de desenvolvimento.
-
 
 
