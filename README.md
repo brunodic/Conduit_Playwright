@@ -138,7 +138,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 </details>
   
 ## Conduit_Playwright
-# Dashboard Corporativo de Automação de Testes
+# Dashboard de Automação de Testes
 
 Sistema de orquestração e monitoramento de execuções de testes automatizados via CI/CD.
 
