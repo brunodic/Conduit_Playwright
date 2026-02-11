@@ -1,4 +1,4 @@
-<details>
+ <details>
 <summary><strong>📘 Documentação completa do projeto</strong></summary>
 
 ![RealWorld Example App](logo.png)
